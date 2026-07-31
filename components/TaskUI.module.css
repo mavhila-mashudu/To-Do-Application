@@ -1,0 +1,578 @@
+.appShell {
+  min-height: 100vh;
+  color: #1a2744;
+  background: #eef2f7;
+  font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.appHeader {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 6%);
+}
+
+.headerInner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(100% - 32px, 1152px);
+  height: 64px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+  color: #1a2744;
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 550;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+
+.navLink:hover {
+  color: #374151;
+  background: #f8fafc;
+}
+
+.navLinkActive {
+  color: #2563eb;
+  background: #eff6ff;
+}
+
+.navCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 999px;
+  color: #64748b;
+  background: #f1f5f9;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+}
+
+.primaryButton,
+.secondaryButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.primaryButton {
+  color: #ffffff;
+  background: #2563eb;
+}
+
+.primaryButton:hover {
+  background: #1d4ed8;
+}
+
+.secondaryButton {
+  color: #2563eb;
+  border-color: #bfdbfe;
+  background: #ffffff;
+}
+
+.secondaryButton:hover {
+  background: #eff6ff;
+}
+
+.main {
+  width: min(100% - 32px, 1152px);
+  margin: 0 auto;
+  padding: 32px 0 64px;
+}
+
+.pageHeading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.pageHeading h1 {
+  font-size: 24px;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+}
+
+.taskCount,
+.sortLabel {
+  color: #7d8ca3;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.statCard strong {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 24px;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.statCard span {
+  color: #7d8ca3;
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.statTotal {
+  color: #1a2744;
+  background: #ffffff;
+}
+
+.statTodo {
+  color: #4338ca;
+  background: #eef2ff;
+}
+
+.statProgress {
+  color: #c2410c;
+  background: #fff7ed;
+}
+
+.statComplete {
+  color: #065f46;
+  background: #ecfdf5;
+}
+
+.statOverdue {
+  color: #b91c1c;
+  background: #fef2f2;
+}
+
+.listToolbar,
+.sortOptions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.listToolbar {
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sortOptions {
+  gap: 8px;
+}
+
+.sortLabel {
+  margin-right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sortButton {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+.sortButton:hover {
+  color: #374151;
+  background: #f8fafc;
+}
+
+.sortButtonActive {
+  color: #ffffff;
+  border-color: #2563eb;
+  background: #2563eb;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 8%);
+}
+
+.sortButtonActive:hover {
+  color: #ffffff;
+  background: #1d4ed8;
+}
+
+.taskGrid,
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.taskCard,
+.loadingCard {
+  min-width: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 5%);
+}
+
+.taskCard {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  transition: box-shadow 200ms ease, transform 200ms ease;
+}
+
+.taskCard:hover {
+  box-shadow: 0 8px 18px rgb(15 23 42 / 8%);
+  transform: translateY(-1px);
+}
+
+.taskCardHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.taskCardHeader h3 {
+  flex: 1;
+  min-width: 0;
+  color: #1a2744;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.overdueBadge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  color: #b91c1c;
+  background: #fef2f2;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.overdueBadge > span,
+.statusBadge > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.taskDescription {
+  display: -webkit-box;
+  flex: 1;
+  min-height: 45px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.625;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.taskMeta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topicBadge,
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.topicBlue {
+  color: #1e40af;
+  background: #dbeafe;
+}
+
+.topicPurple {
+  color: #6d28d9;
+  background: #f3e8ff;
+}
+
+.topicPink {
+  color: #9d174d;
+  background: #fce7f3;
+}
+
+.topicAmber {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.topicGreen {
+  color: #166534;
+  background: #f0fdf4;
+}
+
+.dueDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #7d8ca3;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+}
+
+.statusBadge {
+  gap: 6px;
+  margin-left: auto;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+}
+
+.statusTodo {
+  color: #4338ca;
+  background: #eef2ff;
+}
+
+.statusProgress {
+  color: #c2410c;
+  background: #fff7ed;
+}
+
+.statusComplete {
+  color: #065f46;
+  background: #ecfdf5;
+}
+
+.statePanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  padding: 48px 24px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  text-align: center;
+  background: #ffffff;
+}
+
+.statePanel h3 {
+  margin: 16px 0 6px;
+  color: #1a2744;
+  font-size: 18px;
+}
+
+.statePanel p {
+  max-width: 360px;
+  margin-bottom: 20px;
+  color: #7d8ca3;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.emptyTaskIcon,
+.stateIconError {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+}
+
+.emptyTaskIcon {
+  color: #93c5fd;
+  background: #eff6ff;
+}
+
+.stateIconError {
+  color: #b91c1c;
+  background: #fef2f2;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.loadingCard {
+  min-height: 186px;
+  padding: 20px;
+}
+
+.loadingTitle,
+.loadingLine,
+.loadingLineShort {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.loadingTitle {
+  width: 62%;
+  height: 18px;
+  margin-bottom: 22px;
+}
+
+.loadingLine,
+.loadingLineShort {
+  height: 12px;
+  margin-bottom: 10px;
+}
+
+.loadingLineShort {
+  width: 76%;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.appShell :is(a, button):focus-visible {
+  outline: 3px solid rgb(37 99 235 / 30%);
+  outline-offset: 2px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .taskGrid,
+  .loadingGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .statOverdue {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 620px) {
+  .headerInner,
+  .main {
+    width: min(100% - 24px, 1152px);
+  }
+
+  .brand > span:last-child {
+    display: none;
+  }
+
+  .navLink {
+    padding-inline: 10px;
+  }
+
+  .main {
+    padding-top: 24px;
+  }
+
+  .pageHeading {
+    align-items: flex-start;
+  }
+
+  .taskGrid,
+  .loadingGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .taskCard:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .appShell *,
+  .appShell *::before,
+  .appShell *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
