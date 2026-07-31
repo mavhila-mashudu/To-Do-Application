@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import AppHeader from "./AppHeader";
 import TaskList from "./TaskList";
+import TaskModal from "./TaskModal";
 import TaskStats from "./TaskStats";
 import styles from "./TaskUI.module.css";
 
@@ -22,6 +23,11 @@ export default function TaskManager() {
   const [sortBy, setSortBy] = useState("dueDate");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [modalTask, setModalTask] = useState(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const [feedback, setFeedback] = useState(null);
 
   const requestTasks = useCallback(async (signal) => {
     const response = await fetch(
@@ -55,6 +61,15 @@ export default function TaskManager() {
     return () => controller.abort();
   }, [requestTasks]);
 
+  useEffect(() => {
+    if (!feedback) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => setFeedback(null), 4500);
+    return () => window.clearTimeout(timer);
+  }, [feedback]);
+
   function handleSortChange(nextSort) {
     if (nextSort === sortBy) {
       return;
@@ -76,9 +91,69 @@ export default function TaskManager() {
       .finally(() => setIsLoading(false));
   }
 
+  function openCreateModal() {
+    setModalTask(null);
+    setFormErrors({});
+    setIsTaskModalOpen(true);
+  }
+
+  function openEditModal(task) {
+    setModalTask(task);
+    setFormErrors({});
+    setIsTaskModalOpen(true);
+  }
+
+  function closeTaskModal() {
+    if (!isSaving) {
+      setIsTaskModalOpen(false);
+      setModalTask(null);
+      setFormErrors({});
+    }
+  }
+
+  async function saveTask(values) {
+    const isEditing = Boolean(modalTask);
+    const url = isEditing ? `/api/tasks/${modalTask.id}` : "/api/tasks";
+
+    setIsSaving(true);
+    setFormErrors({});
+
+    try {
+      const response = await fetch(url, {
+        method: isEditing ? "PATCH" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      });
+      const payload = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setFormErrors({
+          ...(payload?.error?.fields ?? {}),
+          form: getErrorMessage(payload, "The task could not be saved."),
+        });
+        return;
+      }
+
+      const nextTasks = await requestTasks();
+      setTasks(nextTasks);
+      setIsTaskModalOpen(false);
+      setModalTask(null);
+      setFeedback({
+        type: "success",
+        message: isEditing ? "Task updated successfully." : "Task created successfully.",
+      });
+    } catch (requestError) {
+      setFormErrors({
+        form: requestError.message || "The task could not be saved.",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   return (
     <div className={styles.appShell}>
-      <AppHeader />
+      <AppHeader onNewTask={openCreateModal} />
 
       <main className={styles.main} id="main-content">
         <div className={styles.pageHeading}>
@@ -118,9 +193,36 @@ export default function TaskManager() {
             isLoading={isLoading}
             error={error}
             onRetry={handleRetry}
+            onNewTask={openCreateModal}
+            onEdit={openEditModal}
           />
         </section>
       </main>
+
+      {feedback ? (
+        <div
+          className={`${styles.toast} ${styles.toastSuccess}`}
+          role="status"
+          aria-live="polite"
+        >
+          <span className={styles.toastMark} aria-hidden="true">✓</span>
+          <span>{feedback.message}</span>
+          <button type="button" onClick={() => setFeedback(null)} aria-label="Dismiss message">
+            ×
+          </button>
+        </div>
+      ) : null}
+
+      {isTaskModalOpen ? (
+        <TaskModal
+          key={modalTask?.id ?? "new-task"}
+          task={modalTask}
+          errors={formErrors}
+          isSaving={isSaving}
+          onSave={saveTask}
+          onClose={closeTaskModal}
+        />
+      ) : null}
     </div>
   );
 }

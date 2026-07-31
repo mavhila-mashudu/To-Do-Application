@@ -275,7 +275,7 @@
 .taskCard {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 20px 20px 0;
   transition: box-shadow 200ms ease, transform 200ms ease;
 }
 
@@ -341,6 +341,54 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+  padding-bottom: 16px;
+}
+
+.taskActions {
+  display: flex;
+  gap: 8px;
+  margin: auto -20px 0;
+  padding: 12px 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.editButton,
+.archiveButton,
+.cancelButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.editButton {
+  flex: 1;
+  color: #2563eb;
+  border-color: #bfdbfe;
+}
+
+.editButton:hover {
+  background: #eff6ff;
+}
+
+.archiveButton,
+.cancelButton {
+  color: #64748b;
+  border-color: #e2e8f0;
+}
+
+.archiveButton:hover,
+.cancelButton:hover {
+  color: #374151;
+  background: #f8fafc;
 }
 
 .topicBadge,
@@ -435,6 +483,286 @@
   color: #7d8ca3;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgb(26 39 68 / 52%);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  width: min(100%, 512px);
+  max-height: 92vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgb(15 23 42 / 24%);
+  animation: modalIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modalHeader,
+.modalFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 24px;
+}
+
+.modalHeader {
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.modalHeader h2 {
+  color: #1a2744;
+  font-size: 18px;
+  letter-spacing: -0.015em;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 8px;
+  color: #7d8ca3;
+  background: transparent;
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  color: #374151;
+  background: #f1f5f9;
+}
+
+.formFields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 24px 24px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.formField {
+  min-width: 0;
+}
+
+.formField label,
+.statusFieldset legend {
+  display: block;
+  margin-bottom: 6px;
+  color: #374151;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.formField label span {
+  color: #b91c1c;
+}
+
+.formField :is(input, textarea) {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #dbe3ed;
+  border-radius: 8px;
+  color: #1a2744;
+  background: #ffffff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.formField textarea {
+  min-height: 104px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.formField :is(input, textarea)::placeholder {
+  color: #94a3b8;
+}
+
+.formField :is(input, textarea):focus-visible {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 14%);
+}
+
+.formField :is(input, textarea)[aria-invalid="true"] {
+  border-color: #dc2626;
+}
+
+.fieldError {
+  margin-top: 6px;
+  color: #b91c1c;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.formError {
+  padding: 10px 12px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  background: #fef2f2;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.statusFieldset {
+  min-width: 0;
+  border: 0;
+}
+
+.statusOptions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.statusOption {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  background: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.statusOption > span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.statusOptionSelected.statusOptionTodo {
+  color: #4338ca;
+  border-color: #c7d2fe;
+  background: #eef2ff;
+}
+
+.statusOptionSelected.statusOptionInProgress {
+  color: #c2410c;
+  border-color: #fed7aa;
+  background: #fff7ed;
+}
+
+.statusOptionSelected.statusOptionComplete {
+  color: #065f46;
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+}
+
+.modalFooter {
+  justify-content: flex-end;
+  border-top: 1px solid #f1f5f9;
+  background: #fafbfc;
+}
+
+.modalFooter :is(button:disabled),
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(380px, calc(100vw - 32px));
+  padding: 12px 14px;
+  border: 1px solid;
+  border-radius: 10px;
+  box-shadow: 0 12px 30px rgb(15 23 42 / 14%);
+  font-size: 14px;
+  animation: toastIn 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toastSuccess {
+  color: #065f46;
+  border-color: #a7f3d0;
+  background: #ecfdf5;
+}
+
+.toastMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #059669;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.toast button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: -8px -8px -8px 2px;
+  border: 0;
+  border-radius: 8px;
+  color: currentColor;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .emptyTaskIcon,
@@ -563,6 +891,29 @@
 
   .taskCard:hover {
     transform: none;
+  }
+
+  .newTaskLabel {
+    display: none;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+
+  .statusOptions {
+    grid-template-columns: 1fr;
+  }
+
+  .modalHeader,
+  .modalFooter,
+  .formFields {
+    padding-inline: 18px;
+  }
+
+  .toast {
+    right: 16px;
+    bottom: 16px;
   }
 }
 

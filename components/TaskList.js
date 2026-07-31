@@ -16,7 +16,14 @@ function LoadingState() {
   );
 }
 
-export default function TaskList({ tasks, isLoading, error, onRetry }) {
+export default function TaskList({
+  tasks,
+  isLoading,
+  error,
+  onRetry,
+  onNewTask,
+  onEdit,
+}) {
   if (isLoading) {
     return <LoadingState />;
   }
@@ -44,7 +51,13 @@ export default function TaskList({ tasks, isLoading, error, onRetry }) {
           </svg>
         </span>
         <h3>No active tasks</h3>
-        <p>You&apos;re all caught up. Create a new task when you are ready.</p>
+        <p>You&apos;re all caught up. Create a new task to get started.</p>
+        <button className={styles.primaryButton} type="button" onClick={onNewTask}>
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M6.5 1.5v10M1.5 6.5h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+          </svg>
+          Create your first task
+        </button>
       </div>
     );
   }
@@ -52,7 +65,7 @@ export default function TaskList({ tasks, isLoading, error, onRetry }) {
   return (
     <div className={styles.taskGrid}>
       {tasks.map((task) => (
-        <TaskCard task={task} key={task.id} />
+        <TaskCard task={task} key={task.id} onEdit={onEdit} />
       ))}
     </div>
   );

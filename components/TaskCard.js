@@ -36,7 +36,7 @@ function getStatusClass(status) {
   return styles.statusTodo;
 }
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, onEdit }) {
   return (
     <article className={styles.taskCard} aria-label={`Task: ${task.title}`}>
       <div className={styles.taskCardHeader}>
@@ -70,6 +70,19 @@ export default function TaskCard({ task }) {
           {task.status}
         </span>
       </div>
+
+      {onEdit ? (
+        <div className={styles.taskActions}>
+          <button
+            className={styles.editButton}
+            type="button"
+            onClick={() => onEdit(task)}
+            aria-label={`Edit task: ${task.title}`}
+          >
+            Edit
+          </button>
+        </div>
+      ) : null}
     </article>
   );
 }
