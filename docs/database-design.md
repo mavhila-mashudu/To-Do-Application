@@ -18,7 +18,7 @@ A single table is sufficient because the current requirements describe one resou
 | `status` | `TEXT` | `NOT NULL DEFAULT 'Todo'`; `CHECK (status IN ('Todo', 'In-Progress', 'Complete'))` | Stores the task's current workflow status. |
 | `archived_at` | `TEXT` | `DEFAULT NULL`; nullable | Stores when the task was archived, or `NULL` while the task is active. |
 | `created_at` | `TEXT` | `NOT NULL DEFAULT CURRENT_TIMESTAMP` | Records when the task row was created. |
-| `updated_at` | `TEXT` | `NOT NULL DEFAULT CURRENT_TIMESTAMP` | Records when the task row was created or most recently updated. The repository must assign a new timestamp whenever it edits a task because the default applies only when a row is inserted. |
+| `updated_at` | `TEXT` | `NOT NULL DEFAULT CURRENT_TIMESTAMP` | Records when the task row was created or most recently updated. The repository assigns `CURRENT_TIMESTAMP` whenever it edits or archives a task because the default applies only when a row is inserted. |
 
 ## Status and archival rules
 
@@ -38,6 +38,20 @@ Due dates are stored as `TEXT` in the `YYYY-MM-DD` format. This format is unambi
 
 Overdue is not stored as a column because it changes as time passes even when a task row is unchanged. It will be calculated from `due_date` and `status`: a task is overdue when its due date has passed and its status is not `Complete`. Keeping overdue separate prevents it from becoming a fourth status or becoming stale persisted data.
 
+## Repository behaviour
+
+The repository maps SQLite column names to camel-case JavaScript properties. For example, `due_date`, `archived_at`, `created_at`, and `updated_at` are returned as `dueDate`, `archivedAt`, `createdAt`, and `updatedAt`.
+
+Active-task queries select rows where `archived_at IS NULL`; archived-task queries select rows where `archived_at IS NOT NULL`. Archiving updates `archived_at` and `updated_at` rather than deleting a row.
+
+The repository supports these deterministic ascending sort orders:
+
+- Topic: alphabetical, case-insensitive order, then task ID.
+- Status: `Todo`, `In-Progress`, and `Complete`, then task ID.
+- Due date: earliest `YYYY-MM-DD` value first, then task ID.
+
+An unsupported sort value safely falls back to due-date sorting. The SQL sort expressions come from a fixed internal mapping rather than arbitrary input.
+
 ## AI usage declaration
 
-`ChatGPT work 5.6 Sol High` was used to inspect `database/schema.sql` and assist with drafting this database design documentation. The documented columns, types, constraints, and defaults were checked against the current schema.
+`ChatGPT work 5.6 Sol High` in Codex was used to generate the SQLite task repository code and assist with this database design documentation. The schema details and documented repository behaviour were checked against `database/schema.sql` and the implemented repository.

@@ -32,13 +32,13 @@ These are project requirements, not a claim that the current scaffold already im
 
 ## Architecture
 
-The selected architecture separates the application into the following layers:
+The project uses a lightweight layered architecture:
 
-1. **Presentation layer:** Next.js App Router pages and components render the user interface.
+1. **Presentation layer:** Next.js App Router pages and components will render the task interface.
 2. **REST interface:** Next.js Route Handlers will expose REST endpoints only for operations on task resources that require them.
 3. **Task service:** The service will apply input validation and application rules.
-4. **Task repository:** The repository will contain the SQLite queries and persistence operations.
-5. **Persistence:** SQLite will store task data locally through `better-sqlite3`.
+4. **Task repository:** The implemented repository contains SQLite queries and persistence operations for creating, finding, editing, archiving, filtering, and sorting tasks.
+5. **Persistence:** The implemented database module initializes the existing SQLite schema and provides a shared local connection through `better-sqlite3`.
 
 A separate Express server is unnecessary. Next.js can serve the presentation layer and provide the required REST interface through Route Handlers in the same application, avoiding another server process and a duplicate HTTP stack.
 
@@ -69,10 +69,12 @@ npm start
 
 ## Development status
 
-The Next.js JavaScript project scaffold, dependency configuration, SQLite schema, and placeholder files for the database, repository, rules, and service layers are present. The page still contains the default Next.js starter interface. The layer files are empty, SQLite is not yet connected to the application, and the required task UI, task operations, sorting, archival view, and REST Route Handlers have not yet been implemented.
+SQLite initialization and the task repository are implemented. The repository supports task creation, lookup, editing, archival, active and archived queries, and sorting by topic, status, or due date. Archiving preserves tasks instead of deleting them.
+
+The service and rules files are still empty, no REST Route Handlers exist, and the page still contains the default Next.js starter interface. The task API, application rules, and user interface are therefore not implemented, and the application is not complete.
 
 There is currently no `test` script or implemented automated test command in `package.json`.
 
 ## AI usage declaration
 
-`ChatGPT work 5.6 Sol High` was used to inspect the repository and assist with drafting this project documentation. The resulting documentation was checked against the current repository structure, `package.json`, and `database/schema.sql`.
+`ChatGPT work 5.6 Sol High` in Codex was used to inspect the repository, generate the SQLite task repository code, design its in-memory verification, and assist with this documentation. The generated work was reviewed and verified against the current repository, `package.json`, and `database/schema.sql`.
