@@ -23,6 +23,8 @@ export default function TaskList({
   onRetry,
   onNewTask,
   onEdit,
+  onArchive,
+  archived = false,
 }) {
   if (isLoading) {
     return <LoadingState />;
@@ -50,14 +52,20 @@ export default function TaskList({
             <path d="M13 18h14M13 23h9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
           </svg>
         </span>
-        <h3>No active tasks</h3>
-        <p>You&apos;re all caught up. Create a new task to get started.</p>
-        <button className={styles.primaryButton} type="button" onClick={onNewTask}>
-          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
-            <path d="M6.5 1.5v10M1.5 6.5h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          </svg>
-          Create your first task
-        </button>
+        <h3>{archived ? "No archived tasks" : "No active tasks"}</h3>
+        <p>
+          {archived
+            ? "Tasks that you archive will remain available here."
+            : "You're all caught up. Create a new task to get started."}
+        </p>
+        {!archived ? (
+          <button className={styles.primaryButton} type="button" onClick={onNewTask}>
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <path d="M6.5 1.5v10M1.5 6.5h10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+            </svg>
+            Create your first task
+          </button>
+        ) : null}
       </div>
     );
   }
@@ -65,7 +73,13 @@ export default function TaskList({
   return (
     <div className={styles.taskGrid}>
       {tasks.map((task) => (
-        <TaskCard task={task} key={task.id} onEdit={onEdit} />
+        <TaskCard
+          task={task}
+          key={task.id}
+          onEdit={archived ? undefined : onEdit}
+          onArchive={archived ? undefined : onArchive}
+          archived={archived}
+        />
       ))}
     </div>
   );

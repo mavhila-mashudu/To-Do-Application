@@ -36,11 +36,12 @@ function getStatusClass(status) {
   return styles.statusTodo;
 }
 
-export default function TaskCard({ task, onEdit }) {
+export default function TaskCard({ task, onEdit, onArchive, archived = false }) {
   return (
     <article className={styles.taskCard} aria-label={`Task: ${task.title}`}>
       <div className={styles.taskCardHeader}>
         <h3>{task.title}</h3>
+        {archived ? <span className={styles.archivedBadge}>Archived</span> : null}
         {task.overdue ? (
           <span className={styles.overdueBadge} aria-label="Overdue">
             <span aria-hidden="true" />
@@ -71,16 +72,28 @@ export default function TaskCard({ task, onEdit }) {
         </span>
       </div>
 
-      {onEdit ? (
+      {onEdit || onArchive ? (
         <div className={styles.taskActions}>
-          <button
-            className={styles.editButton}
-            type="button"
-            onClick={() => onEdit(task)}
-            aria-label={`Edit task: ${task.title}`}
-          >
-            Edit
-          </button>
+          {onEdit ? (
+            <button
+              className={styles.editButton}
+              type="button"
+              onClick={() => onEdit(task)}
+              aria-label={`Edit task: ${task.title}`}
+            >
+              Edit
+            </button>
+          ) : null}
+          {onArchive ? (
+            <button
+              className={styles.archiveButton}
+              type="button"
+              onClick={() => onArchive(task)}
+              aria-label={`Archive task: ${task.title}`}
+            >
+              Archive
+            </button>
+          ) : null}
         </div>
       ) : null}
     </article>

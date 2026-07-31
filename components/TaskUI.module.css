@@ -143,6 +143,13 @@
   letter-spacing: -0.025em;
 }
 
+.pageDescription {
+  margin-top: 5px;
+  color: #7d8ca3;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .taskCount,
 .sortLabel {
   color: #7d8ca3;
@@ -315,6 +322,20 @@
   font-weight: 650;
 }
 
+.archivedBadge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  min-height: 24px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  color: #475569;
+  background: #f1f5f9;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  font-weight: 650;
+}
+
 .overdueBadge > span,
 .statusBadge > span {
   width: 6px;
@@ -389,6 +410,25 @@
 .cancelButton:hover {
   color: #374151;
   background: #f8fafc;
+}
+
+.archiveConfirmButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid #dc2626;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #dc2626;
+  font-size: 14px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.archiveConfirmButton:hover {
+  background: #b91c1c;
 }
 
 .topicBadge,
@@ -688,6 +728,48 @@
 .iconButton:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.archiveDialog {
+  width: min(100%, 420px);
+}
+
+.archiveDialogBody {
+  padding: 28px 28px 20px;
+  text-align: center;
+}
+
+.archiveDialogBody h2 {
+  margin: 16px 0 8px;
+  color: #1a2744;
+  font-size: 19px;
+}
+
+.archiveDialogBody > p:not(.formError) {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.archiveDialogBody strong {
+  color: #374151;
+  font-weight: 650;
+}
+
+.archiveDialogBody .formError {
+  margin-top: 16px;
+  text-align: left;
+}
+
+.archiveDialogIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  color: #b45309;
+  background: #fffbeb;
 }
 
 .toast {
