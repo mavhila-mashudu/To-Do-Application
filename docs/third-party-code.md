@@ -1,23 +1,27 @@
-# Third-party code
+# Third-party code and tools
 
-This document lists only the direct production and development dependencies declared in `package.json`. It does not list transitive packages installed under `node_modules`.
+Only direct dependencies declared in `package.json` are listed below; transitive packages under `node_modules` are excluded.
 
 ## Production dependencies
 
-| Package | Declared version | Role in this project | Reason selected |
-| --- | --- | --- | --- |
-| `better-sqlite3` | `^13.0.2` | Provides synchronous SQLite access for the local Node.js application. | Its direct synchronous API is lightweight and suited to this local-first, single-user application. |
-| `next` | `^16.2.12` | Provides the App Router, page rendering, application build tooling, and planned Route Handlers. | It supports both the presentation and required REST layers without a separate Express server. |
-| `react` | `19.2.4` | Provides the component model used to build the user interface. | It is the UI library used by the selected Next.js application architecture. |
-| `react-dom` | `19.2.4` | Connects React components to browser DOM rendering. | It is required for rendering the React interface in the web application. |
+| Package | Declared version | Purpose and reason selected |
+| --- | --- | --- |
+| `better-sqlite3` | `^13.0.2` | Provides a direct synchronous SQLite API well suited to this local-first, single-user Node.js application. |
+| `next` | `^16.2.12` | Supplies the App Router, Route Handlers, rendering, development server and production build so the UI and REST API can run without a separate Express server. |
+| `react` | `19.2.4` | Provides the component and state model used by the task interface. |
+| `react-dom` | `19.2.4` | Renders and hydrates the React interface in the browser. |
 
 ## Development dependencies
 
-| Package | Declared version | Role in this project | Reason selected |
-| --- | --- | --- | --- |
-| `eslint` | `^9` | Analyses JavaScript source code for linting issues during development. | It provides automated, consistent code-quality checks. |
-| `eslint-config-next` | `^16.2.12` | Supplies the ESLint configuration and rules recommended for Next.js projects. | It aligns linting with the framework and its supported conventions. |
+| Package | Declared version | Purpose and reason selected |
+| --- | --- | --- |
+| `eslint` | `^9` | Performs repeatable static analysis of the JavaScript source. |
+| `eslint-config-next` | `^16.2.12` | Applies Next.js Core Web Vitals and framework-aware ESLint rules. |
+| `vitest` | `^4.1.10` | Runs the deterministic repository, rules and service tests with a concise JavaScript testing API. |
 
-## AI usage declaration
+## External assets and generated reference
 
-`ChatGPT work 5.6 Sol High` in Codex was used to generate the SQLite task repository code and assist with this dependency documentation. Package names and declared versions were checked against the current direct dependencies and development dependencies in `package.json`.
+- The interface uses the Geist and Geist Mono typefaces through Next.js `next/font/google`, which integrates font loading with the framework build.
+- Figma Make produced the supplied UI reference ZIP/folder. The reference was recreated as maintainable React components and CSS and connected to the existing REST API; compiled Figma HTML, CSS and JavaScript bundles were not copied into the application. The exact Figma Make model was not displayed, so the tool is recorded as `Figma-Make` without guessing a model.
+
+The preceding document was reviewed and edited with the assistance of the following: Codex[5.6 Sol High].

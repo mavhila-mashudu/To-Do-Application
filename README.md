@@ -1,82 +1,100 @@
 # COMS3011A Lab 1 Todo Application
 
-This project is a local-first, single-user todo application. It is intended to keep one user's task data on the local machine and preserve that information between application restarts.
+## Overview
 
-## Technology
+This is a local-first, single-user todo application built with Next.js and SQLite. It runs on the user's machine, stores tasks in a local database, and preserves them between restarts.
 
-The project currently uses:
+## Implemented features
 
-- Next.js 16 App Router
-- JavaScript
-- Node.js
+- Create and edit tasks with a title, description, due date, topic and fixed status.
+- Use only `Todo`, `In-Progress` and `Complete` as statuses.
+- Display overdue as a derived indicator, not as a status.
+- Sort active tasks by due date, status or topic.
+- Archive tasks without deleting them and view them on the Archived page.
+- Show active-task statistics, loading and empty states, validation feedback, and success or error messages.
+- Support responsive layouts and keyboard-accessible forms and dialogs.
+- Persist task information in SQLite after the application restarts.
+
+## Requirements
+
+- Node.js `v22.20.0`
 - npm
-- SQLite
-- `better-sqlite3`
-- React and React DOM
+- A local filesystem location in which the application can create its `data/` directory and SQLite database
 
-The Node.js version used for this project is exactly `v22.20.0`.
+## Clean installation and running
 
-## Functional requirements
+From the repository root, which contains `package.json`:
 
-The application is required to:
-
-- Create and edit tasks.
-- Archive tasks without deleting them.
-- View archived tasks.
-- Sort tasks by topic, status, and due date.
-- Use only the statuses `Todo`, `In-Progress`, and `Complete`.
-- Display whether a task is overdue separately from its status.
-- Preserve task information after the application is restarted.
-
-The current implementation supports these requirements through the task dashboard, REST API, service, repository, and SQLite persistence layer.
-
-## Architecture
-
-The project uses a lightweight layered architecture:
-
-1. **Presentation layer:** Next.js App Router pages and components render the task interface.
-2. **REST interface:** Next.js Route Handlers expose REST endpoints only for operations on task resources that require them.
-3. **Task service:** The implemented service applies input validation and application rules.
-4. **Task repository:** The implemented repository contains SQLite queries and persistence operations for creating, finding, editing, archiving, filtering, and sorting tasks.
-5. **Persistence:** The implemented database module initializes the existing SQLite schema and provides a shared local connection through `better-sqlite3`.
-
-A separate Express server is unnecessary. Next.js can serve the presentation layer and provide the required REST interface through Route Handlers in the same application, avoiding another server process and a duplicate HTTP stack.
-
-REST endpoints are implemented for task creation, retrieval, editing, listing, sorting, and archival. User-facing removal is archival rather than deletion, so tasks remain stored and available from the Archived page.
-
-## Installation and running
-
-From the repository's `todo` directory, install the locked dependency versions:
-
-```bash
+```powershell
 npm ci
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). On the first task API request, the application automatically creates `data/` and `data/tasks.db` if needed, reads `database/schema.sql`, and initializes the `tasks` table. The generated database, WAL and shared-memory files are ignored by Git.
 
-To run a production build locally:
+Available commands:
 
-```bash
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Next.js development server. |
+| `npm test` | Run all Vitest suites once. |
+| `npm run lint` | Run ESLint across the project. |
+| `npm run build` | Create an optimized production build. |
+| `npm start` | Start the production server after `npm run build`. |
+
+For a production run:
+
+```powershell
 npm run build
 npm start
 ```
 
-## Development status
+## Architecture and repository structure
 
-SQLite initialization and the task repository are implemented. The repository supports task creation, lookup, editing, archival, active and archived queries, and sorting by topic, status, or due date. Archiving preserves tasks instead of deleting them.
+The application uses a lightweight layered architecture within one Next.js process; a separate Express server is unnecessary.
 
-The task rules and service are implemented and integrated with the repository. They validate task IDs and inputs, enforce the supported status and sorting values, and add derived overdue information without storing overdue in SQLite.
+```text
+app/                    Next.js pages and task Route Handlers
+components/             Dashboard, forms, dialogs, task cards and CSS Module
+lib/taskService.js      Validation orchestration and derived overdue data
+lib/taskRules.js        Status, date, sorting and input rules
+lib/taskRepository.js   Parameterized SQLite persistence and row mapping
+lib/database.js         Shared SQLite connection and schema initialization
+database/schema.sql     Shipped tasks table definition
+tests/                  Vitest repository, rules and service suites
+docs/                   Database and third-party documentation
+data/tasks.db           Generated local database; not tracked by Git
+```
 
-The REST Route Handlers and responsive task interface are implemented. The dashboard loads persisted active tasks, shows statistics and derived overdue indicators, sorts by due date, status, or topic, and supports creating, editing, and archiving tasks. Archived tasks remain available on the Archived page. The UI includes loading, empty, success, error, keyboard-focus, and mobile layout states.
+The React interface calls Next.js Route Handlers. Route Handlers translate HTTP requests and errors, the service enforces application rules, the repository owns SQL queries, and `better-sqlite3` persists data in SQLite. The shared database connection is cached on `globalThis`, which avoids opening a new connection during Next.js development reloads.
 
-There is currently no `test` script or implemented automated test command in `package.json`.
+## REST API
 
-## AI usage declaration
+Successful responses contain a `data` property. Validation and missing-task responses contain a structured `error` property.
 
-`ChatGPT work 5.6 Sol High` in Codex was used to inspect the repository, generate the SQLite task repository code, design its in-memory verification, recreate the task interface from the supplied reference, and assist with this documentation. The generated work was reviewed and verified against the current repository, `package.json`, and `database/schema.sql`.
+| Method and route | Behaviour |
+| --- | --- |
+| `GET /api/tasks?archived=false&sortBy=dueDate` | List active tasks. `sortBy` accepts `dueDate`, `status` or `topic`. |
+| `GET /api/tasks?archived=true&sortBy=dueDate` | List archived tasks. |
+| `POST /api/tasks` | Create a task from `title`, `description`, `dueDate`, `topic` and optional `status`. |
+| `GET /api/tasks/[id]` | Retrieve one task. |
+| `PATCH /api/tasks/[id]` | Edit one or more allowed task fields. |
+| `PATCH /api/tasks/[id]` with `{ "archived": true }` | Archive a task without deleting it. |
+
+There is no delete endpoint.
+
+## Testing
+
+`npm test` runs 10 deterministic tests across three Vitest suites. The tests cover repository persistence and archiving, logical status sorting, input and date validation, overdue calculation, service validation, and missing-task handling. Database tests use isolated `:memory:` SQLite connections and do not depend on `data/tasks.db`.
+
+## AI use declarations
+
+This repository makes use of AI code generation using the following tools: ChatGPT-Web[5.6 Sol High], Codex[5.6 Sol High], and Figma-Make.
+
+This repository does not use AI in-line editing tools.
+
+This repository makes use of AI code review using the following tools: ChatGPT-Web[5.6 Sol High] and Codex[5.6 Sol High].
+
+Figma Make produced the visual UI reference that was recreated as React components and CSS and integrated with the application. Its exact model name was not displayed, so the tool is declared as `Figma-Make` without an invented model name.
+
+The preceding document was reviewed and edited with the assistance of the following: Codex[5.6 Sol High].
