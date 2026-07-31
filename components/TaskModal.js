@@ -26,13 +26,19 @@ export default function TaskModal({ task, errors, isSaving, onSave, onClose }) {
       : EMPTY_TASK
   );
   const dialogRef = useRef(null);
+  const isSavingRef = useRef(isSaving);
   const isEditing = Boolean(task);
 
   useEffect(() => {
+    isSavingRef.current = isSaving;
+  }, [isSaving]);
+
+  useEffect(() => {
     const previouslyFocused = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
 
     function handleKeyDown(event) {
-      if (event.key === "Escape" && !isSaving) {
+      if (event.key === "Escape" && !isSavingRef.current) {
         onClose();
         return;
       }
@@ -63,13 +69,14 @@ export default function TaskModal({ task, errors, isSaving, onSave, onClose }) {
 
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+    dialogRef.current?.querySelector("input")?.focus();
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       previouslyFocused?.focus();
     };
-  }, [isSaving, onClose]);
+  }, [onClose]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -124,7 +131,7 @@ export default function TaskModal({ task, errors, isSaving, onSave, onClose }) {
               Cancel
             </button>
             <button className={styles.primaryButton} type="submit" disabled={isSaving}>
-              {isSaving ? "Saving…" : isEditing ? "Save Changes" : "Create Task"}
+              {isSaving ? "Saving..." : isEditing ? "Save Changes" : "Create Task"}
             </button>
           </div>
         </form>

@@ -11,7 +11,7 @@ function LoadingState() {
           <span className={styles.loadingLineShort} />
         </div>
       ))}
-      <span className={styles.visuallyHidden}>Loading tasks…</span>
+      <span className={styles.visuallyHidden}>Loading tasks...</span>
     </div>
   );
 }

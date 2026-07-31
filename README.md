@@ -28,21 +28,21 @@ The application is required to:
 - Display whether a task is overdue separately from its status.
 - Preserve task information after the application is restarted.
 
-These are project requirements, not a claim that the current scaffold already implements them.
+The current implementation supports these requirements through the task dashboard, REST API, service, repository, and SQLite persistence layer.
 
 ## Architecture
 
 The project uses a lightweight layered architecture:
 
-1. **Presentation layer:** Next.js App Router pages and components will render the task interface.
-2. **REST interface:** Next.js Route Handlers will expose REST endpoints only for operations on task resources that require them.
-3. **Task service:** The service will apply input validation and application rules.
+1. **Presentation layer:** Next.js App Router pages and components render the task interface.
+2. **REST interface:** Next.js Route Handlers expose REST endpoints only for operations on task resources that require them.
+3. **Task service:** The implemented service applies input validation and application rules.
 4. **Task repository:** The implemented repository contains SQLite queries and persistence operations for creating, finding, editing, archiving, filtering, and sorting tasks.
 5. **Persistence:** The implemented database module initializes the existing SQLite schema and provides a shared local connection through `better-sqlite3`.
 
 A separate Express server is unnecessary. Next.js can serve the presentation layer and provide the required REST interface through Route Handlers in the same application, avoiding another server process and a duplicate HTTP stack.
 
-REST endpoints are planned for task create, read, update, and delete operations. No Route Handler files currently exist, so these endpoints are not yet implemented. In this application, user-facing "deletion" is expected to be archival rather than removal of the stored task.
+REST endpoints are implemented for task creation, retrieval, editing, listing, sorting, and archival. User-facing removal is archival rather than deletion, so tasks remain stored and available from the Archived page.
 
 ## Installation and running
 
@@ -73,10 +73,10 @@ SQLite initialization and the task repository are implemented. The repository su
 
 The task rules and service are implemented and integrated with the repository. They validate task IDs and inputs, enforce the supported status and sorting values, and add derived overdue information without storing overdue in SQLite.
 
-No REST Route Handlers exist, and the page still contains the default Next.js starter interface. The REST API and task user interface are therefore not implemented, and the application is not complete.
+The REST Route Handlers and responsive task interface are implemented. The dashboard loads persisted active tasks, shows statistics and derived overdue indicators, sorts by due date, status, or topic, and supports creating, editing, and archiving tasks. Archived tasks remain available on the Archived page. The UI includes loading, empty, success, error, keyboard-focus, and mobile layout states.
 
 There is currently no `test` script or implemented automated test command in `package.json`.
 
 ## AI usage declaration
 
-`ChatGPT work 5.6 Sol High` in Codex was used to inspect the repository, generate the SQLite task repository code, design its in-memory verification, and assist with this documentation. The generated work was reviewed and verified against the current repository, `package.json`, and `database/schema.sql`.
+`ChatGPT work 5.6 Sol High` in Codex was used to inspect the repository, generate the SQLite task repository code, design its in-memory verification, recreate the task interface from the supplied reference, and assist with this documentation. The generated work was reviewed and verified against the current repository, `package.json`, and `database/schema.sql`.

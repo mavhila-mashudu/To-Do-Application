@@ -131,25 +131,25 @@ export default function TaskManager({ archived = false }) {
     setIsTaskModalOpen(true);
   }
 
-  function closeTaskModal() {
+  const closeTaskModal = useCallback(() => {
     if (!isSaving) {
       setIsTaskModalOpen(false);
       setModalTask(null);
       setFormErrors({});
     }
-  }
+  }, [isSaving]);
 
   function openArchiveDialog(task) {
     setArchiveDialogTask(task);
     setArchiveError("");
   }
 
-  function closeArchiveDialog() {
+  const closeArchiveDialog = useCallback(() => {
     if (!isArchiving) {
       setArchiveDialogTask(null);
       setArchiveError("");
     }
-  }
+  }, [isArchiving]);
 
   async function confirmArchive() {
     if (!archiveDialogTask) {
@@ -232,6 +232,9 @@ export default function TaskManager({ archived = false }) {
 
   return (
     <div className={styles.appShell}>
+      <a className={styles.skipLink} href="#main-content">
+        Skip to main content
+      </a>
       <AppHeader
         activeView={archived ? "archived" : "dashboard"}
         archivedCount={archivedCount}
@@ -256,28 +259,30 @@ export default function TaskManager({ archived = false }) {
 
         {archived ? null : <TaskStats tasks={tasks} />}
 
-        <section aria-labelledby="active-task-list-heading">
-          <div className={archived ? styles.visuallyHidden : styles.listToolbar}>
-            <h2 className={styles.visuallyHidden} id="active-task-list-heading">
-              {archived ? "Archived task list" : "Active task list"}
-            </h2>
-            <span className={styles.sortLabel}>Sort by</span>
-            <div className={styles.sortOptions} aria-label="Sort active tasks">
-              {SORT_OPTIONS.map((option) => (
-                <button
-                  className={`${styles.sortButton} ${
-                    sortBy === option.value ? styles.sortButtonActive : ""
-                  }`}
-                  type="button"
-                  key={option.value}
-                  onClick={() => handleSortChange(option.value)}
-                  aria-pressed={sortBy === option.value}
-                >
-                  {option.label}
-                </button>
-              ))}
+        <section aria-labelledby="task-list-heading">
+          <h2 className={styles.visuallyHidden} id="task-list-heading">
+            {archived ? "Archived task list" : "Active task list"}
+          </h2>
+          {!archived ? (
+            <div className={styles.listToolbar}>
+              <span className={styles.sortLabel}>Sort by</span>
+              <div className={styles.sortOptions} aria-label="Sort active tasks">
+                {SORT_OPTIONS.map((option) => (
+                  <button
+                    className={`${styles.sortButton} ${
+                      sortBy === option.value ? styles.sortButtonActive : ""
+                    }`}
+                    type="button"
+                    key={option.value}
+                    onClick={() => handleSortChange(option.value)}
+                    aria-pressed={sortBy === option.value}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           <TaskList
             tasks={tasks}
@@ -298,10 +303,16 @@ export default function TaskManager({ archived = false }) {
           role="status"
           aria-live="polite"
         >
-          <span className={styles.toastMark} aria-hidden="true">✓</span>
+          <span className={styles.toastMark} aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+              <path d="m2 6.5 3 3 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
           <span>{feedback.message}</span>
           <button type="button" onClick={() => setFeedback(null)} aria-label="Dismiss message">
-            ×
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2 2l8 8M10 2 2 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            </svg>
           </button>
         </div>
       ) : null}

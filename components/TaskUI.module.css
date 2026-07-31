@@ -1,8 +1,29 @@
 .appShell {
+  width: 100%;
+  min-width: 0;
   min-height: 100vh;
   color: #1a2744;
   background: #eef2f7;
   font-family: var(--font-geist-sans), Arial, sans-serif;
+}
+
+.skipLink {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #1a2744;
+  font-size: 14px;
+  font-weight: 650;
+  transform: translateY(-150%);
+  transition: transform 150ms ease;
+}
+
+.skipLink:focus {
+  transform: translateY(0);
 }
 
 .appHeader {
@@ -234,7 +255,7 @@
 }
 
 .sortButton {
-  min-height: 36px;
+  min-height: 40px;
   padding: 6px 12px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -429,6 +450,11 @@
 
 .archiveConfirmButton:hover {
   background: #b91c1c;
+}
+
+.archiveConfirmButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .topicBadge,
@@ -958,6 +984,10 @@
     padding-inline: 10px;
   }
 
+  .sortButton {
+    min-height: 44px;
+  }
+
   .main {
     padding-top: 24px;
   }
@@ -991,6 +1021,17 @@
   .modalFooter,
   .formFields {
     padding-inline: 18px;
+  }
+
+  .modalBackdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: calc(100dvh - 24px);
+    border-radius: 16px 16px 0 0;
   }
 
   .toast {

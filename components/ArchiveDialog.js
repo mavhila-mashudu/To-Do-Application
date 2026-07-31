@@ -12,12 +12,18 @@ export default function ArchiveDialog({
   onClose,
 }) {
   const dialogRef = useRef(null);
+  const isArchivingRef = useRef(isArchiving);
+
+  useEffect(() => {
+    isArchivingRef.current = isArchiving;
+  }, [isArchiving]);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
 
     function handleKeyDown(event) {
-      if (event.key === "Escape" && !isArchiving) {
+      if (event.key === "Escape" && !isArchivingRef.current) {
         onClose();
         return;
       }
@@ -52,10 +58,10 @@ export default function ArchiveDialog({
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       previouslyFocused?.focus();
     };
-  }, [isArchiving, onClose]);
+  }, [onClose]);
 
   function handleBackdropMouseDown(event) {
     if (event.target === event.currentTarget && !isArchiving) {
