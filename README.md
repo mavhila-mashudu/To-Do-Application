@@ -71,7 +71,9 @@ npm start
 
 SQLite initialization and the task repository are implemented. The repository supports task creation, lookup, editing, archival, active and archived queries, and sorting by topic, status, or due date. Archiving preserves tasks instead of deleting them.
 
-The service and rules files are still empty, no REST Route Handlers exist, and the page still contains the default Next.js starter interface. The task API, application rules, and user interface are therefore not implemented, and the application is not complete.
+The task rules and service are implemented and integrated with the repository. They validate task IDs and inputs, enforce the supported status and sorting values, and add derived overdue information without storing overdue in SQLite.
+
+No REST Route Handlers exist, and the page still contains the default Next.js starter interface. The REST API and task user interface are therefore not implemented, and the application is not complete.
 
 There is currently no `test` script or implemented automated test command in `package.json`.
 
