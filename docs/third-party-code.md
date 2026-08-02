@@ -22,6 +22,6 @@ Only direct dependencies declared in `package.json` are listed below; transitive
 ## External assets and generated reference
 
 - The interface uses the Geist and Geist Mono typefaces through Next.js `next/font/google`, which integrates font loading with the framework build.
-- Figma Make produced the supplied UI reference ZIP/folder. The reference was recreated as maintainable React components and CSS and connected to the existing REST API; compiled Figma HTML, CSS and JavaScript bundles were not copied into the application. The exact Figma Make model was not displayed, so the tool is recorded as `Figma-Make` without guessing a model.
+- Figma Make produced the supplied UI. The reference was recreated as maintainable React components and CSS and connected to the existing REST API. The exact Figma Make model was not displayed, so the tool is recorded as `Figma-Make` without guessing a model.
 
 The preceding document was reviewed and edited with the assistance of the following: Codex[5.6 Sol High].
